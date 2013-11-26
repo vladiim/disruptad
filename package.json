@@ -1,0 +1,19 @@
+{
+  "name": "DisruptAd",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "./node_modules/.bin/supervisor app.js",
+    "test": "./node_modules/.bin/mocha tests/* --compilers ./node_modules/.bin/coffee:coffee-script"
+  },
+  "dependencies": {
+    "mocha": "*",
+    "chai": "*",
+    "sinon": "*",
+    "socket.io-client": "*",
+    "coffee-script": "*",
+    "supervisor": "*",
+    "express": "3.4.4",
+    "jade": "*"
+  }
+}
