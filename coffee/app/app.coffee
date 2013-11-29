@@ -53,6 +53,8 @@ app.get "/", routes.index
 ### ********************************************************************
 EVENT HANDLERS
 ###
+# @users ?= {}
+
 io.sockets.on "connection", (socket) ->
   user = new User
   io.sockets.emit 'user created', user
@@ -60,4 +62,4 @@ io.sockets.on "connection", (socket) ->
 ### ********************************************************************
 EXPORTS
 ###
-root.server = server 
+root.server = server
