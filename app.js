@@ -74,15 +74,6 @@ Module dependencies
   io = socket.listen(server);
 
   /* ********************************************************************
-  Exports
-  */
-
-
-  root.server = server;
-
-  root.clients = clients;
-
-  /* ********************************************************************
   Routes
   */
 
@@ -95,9 +86,19 @@ Module dependencies
 
 
   io.sockets.on("connection", function(socket) {
-    return server.clients.push({
-      "client": 'bob'
+    console.log('made connection');
+    return socket.on('connection name', function(user) {
+      return io.sockets.emit("new user", "" + user.name + " has joined.");
     });
   });
+
+  /* ********************************************************************
+  Exports
+  */
+
+
+  root.server = server;
+
+  root.clients = clients;
 
 }).call(this);

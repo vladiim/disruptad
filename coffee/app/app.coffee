@@ -54,7 +54,10 @@ Event handlers
 ###
 io.sockets.on "connection", (socket) ->
   console.log 'made connection'
-  clients.push( { "client": 'bob' } )
+  # clients.push( { "client": 'bob' } )
+
+  socket.on 'connection name', (user) ->
+    io.sockets.emit "new user", "#{user.name} has joined."
 
 ### ********************************************************************
 Exports
