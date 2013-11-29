@@ -2,9 +2,15 @@
   var User, root;
 
   User = (function() {
-    function User(name) {
-      this.name = name;
+    function User() {
+      this.uid = this.createUid();
     }
+
+    User.prototype.createUid = function() {
+      var randomNumber;
+      randomNumber = Math.random().toString();
+      return randomNumber = randomNumber.substring(2, randomNumber.length);
+    };
 
     return User;
 

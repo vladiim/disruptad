@@ -4,7 +4,7 @@ MODULE DEPENDENCIES
 
 
 (function() {
-  var COOKIE_SECRET, app, environment, express, http, io, path, root, routes, server, socket;
+  var COOKIE_SECRET, User, app, environment, express, http, io, path, root, routes, server, socket;
 
   express = require("express");
 
@@ -15,6 +15,8 @@ MODULE DEPENDENCIES
   path = require("path");
 
   socket = require("socket.io");
+
+  User = require('./routes/user').User;
 
   root = typeof exports !== "undefined" && exports !== null ? exports : window;
 
@@ -87,8 +89,7 @@ MODULE DEPENDENCIES
 
   io.sockets.on("connection", function(socket) {
     var user;
-    user = {};
-    user.uid = 'blah';
+    user = new User;
     return io.sockets.emit('user created', user);
   });
 

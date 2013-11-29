@@ -2,13 +2,11 @@
 MODULE DEPENDENCIES
 ###
 express = require("express")
-
 routes  = require("./routes")
-
 http    = require("http")
 path    = require("path")
 socket  = require("socket.io")
-
+User    = require('./routes/user').User
 root    = exports ? window
 app     = express()
 
@@ -25,10 +23,11 @@ app.use express.logger("dev")
 app.use express.json()
 app.use express.urlencoded()
 app.use express.methodOverride()
-app.use express.cookieParser(COOKIE_SECRET)
 
+app.use express.cookieParser(COOKIE_SECRET)
 app.use express.session()
 app.use app.router
+
 app.use express.static(path.join(__dirname, "public"))
 
 ### ********************************************************************
@@ -55,14 +54,10 @@ app.get "/", routes.index
 EVENT HANDLERS
 ###
 io.sockets.on "connection", (socket) ->
-  user = {}
-  user.uid = 'blah'
+  user = new User
   io.sockets.emit 'user created', user
-
-  # socket.on 'connection name', (user) ->
-    # io.sockets.emit "new user", "#{user.name} has joined."
 
 ### ********************************************************************
 EXPORTS
 ###
-root.server  = server
+root.server = server 

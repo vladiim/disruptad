@@ -4,7 +4,7 @@ User   = require('../routes/user').User
 describe 'User', ->
 
   beforeEach ->
-    @user = new User 'NAME'
+    @user = new User
 
-  it 'gets and sets a name', ->
-    expect(@user.name).to.eql 'NAME'
+  it 'creates a uid for the user', ->
+    expect(@user.uid).to.exist
