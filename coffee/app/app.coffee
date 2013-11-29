@@ -1,5 +1,5 @@
 ### ********************************************************************
-Module dependencies
+MODULE DEPENDENCIES
 ###
 express = require("express")
 
@@ -9,12 +9,13 @@ http    = require("http")
 path    = require("path")
 socket  = require("socket.io")
 
-clients = {}
 root    = exports ? window
 app     = express()
 
+COOKIE_SECRET = "CXtgEF1E0kIAt9CXtgEF1E0kIAt9CXtgEF1E0kIAt9CXtgEF1E0kIAt9"
+
 ### ********************************************************************
-App configurations
+MIDDLEWARE
 ###
 app.set "port", process.env.PORT or 3000
 app.set "views", path.join(__dirname, "views")
@@ -24,19 +25,20 @@ app.use express.logger("dev")
 app.use express.json()
 app.use express.urlencoded()
 app.use express.methodOverride()
-app.use express.cookieParser("your secret here")
+app.use express.cookieParser(COOKIE_SECRET)
+
 app.use express.session()
 app.use app.router
 app.use express.static(path.join(__dirname, "public"))
 
 ### ********************************************************************
-Development environment settings
+DEVELOPMENT ENVIRONMENT SETTINGS
 ###
 environment = app.get("env")
 app.use(express.errorHandler()) if environment is "development"
 
 ### ********************************************************************
-Create server
+CREATE SERVER
 ###
 server = http.createServer(app).listen(app.get("port"), ->
   console.log "Express server listening on port " + app.get("port")
@@ -50,17 +52,17 @@ Routes
 app.get "/", routes.index
 
 ### ********************************************************************
-Event handlers
+EVENT HANDLERS
 ###
 io.sockets.on "connection", (socket) ->
-  console.log 'made connection'
-  # clients.push( { "client": 'bob' } )
+  user = {}
+  user.uid = 'blah'
+  io.sockets.emit 'user created', user
 
-  socket.on 'connection name', (user) ->
-    io.sockets.emit "new user", "#{user.name} has joined."
+  # socket.on 'connection name', (user) ->
+    # io.sockets.emit "new user", "#{user.name} has joined."
 
 ### ********************************************************************
-Exports
+EXPORTS
 ###
 root.server  = server
-root.clients = clients

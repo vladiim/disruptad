@@ -1,10 +1,10 @@
 /* ********************************************************************
-Module dependencies
+MODULE DEPENDENCIES
 */
 
 
 (function() {
-  var app, clients, environment, express, http, io, path, root, routes, server, socket;
+  var COOKIE_SECRET, app, environment, express, http, io, path, root, routes, server, socket;
 
   express = require("express");
 
@@ -16,14 +16,14 @@ Module dependencies
 
   socket = require("socket.io");
 
-  clients = {};
-
   root = typeof exports !== "undefined" && exports !== null ? exports : window;
 
   app = express();
 
+  COOKIE_SECRET = "CXtgEF1E0kIAt9CXtgEF1E0kIAt9CXtgEF1E0kIAt9CXtgEF1E0kIAt9";
+
   /* ********************************************************************
-  App configurations
+  MIDDLEWARE
   */
 
 
@@ -43,7 +43,7 @@ Module dependencies
 
   app.use(express.methodOverride());
 
-  app.use(express.cookieParser("your secret here"));
+  app.use(express.cookieParser(COOKIE_SECRET));
 
   app.use(express.session());
 
@@ -52,7 +52,7 @@ Module dependencies
   app.use(express["static"](path.join(__dirname, "public")));
 
   /* ********************************************************************
-  Development environment settings
+  DEVELOPMENT ENVIRONMENT SETTINGS
   */
 
 
@@ -63,7 +63,7 @@ Module dependencies
   }
 
   /* ********************************************************************
-  Create server
+  CREATE SERVER
   */
 
 
@@ -81,24 +81,22 @@ Module dependencies
   app.get("/", routes.index);
 
   /* ********************************************************************
-  Event handlers
+  EVENT HANDLERS
   */
 
 
   io.sockets.on("connection", function(socket) {
-    console.log('made connection');
-    return socket.on('connection name', function(user) {
-      return io.sockets.emit("new user", "" + user.name + " has joined.");
-    });
+    var user;
+    user = {};
+    user.uid = 'blah';
+    return io.sockets.emit('user created', user);
   });
 
   /* ********************************************************************
-  Exports
+  EXPORTS
   */
 
 
   root.server = server;
-
-  root.clients = clients;
 
 }).call(this);
