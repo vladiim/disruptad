@@ -1,6 +1,6 @@
 expect     = require('chai').expect
 io         = require('socket.io-client')
-{UserList} = require('../routes/user_list')
+{UserList} = require('../../routes/user_list')
 socketURL  = 'http://localhost:3000'
 
 options =
@@ -10,30 +10,19 @@ options =
 describe "App", ->
 
   describe "on client connection", ->
+    testClientConnection = (expectation, done) ->
+      client = io.connect(socketURL, options)
+      client.on 'connect', (data) ->
+        client.on 'user created', (user) ->
+          expectation(user)
+          client.disconnect()
+          done()
 
     it "sets the client up as a user", (done) ->
-      client = io.connect(socketURL, options)
-      client.on 'connect', (data) ->
-        client.on 'user created', (user) ->
-          expect(user).to.be
-          client.disconnect()
-          done()
+      expectation = (user) -> expect(user).to.be
+      testClientConnection(expectation, done)
 
-    it "adds the user to the user list", (done) ->
-      client = io.connect(socketURL, options)
-      client.on 'connect', (data) ->
-        client.on 'user created', (user) ->
-          expect(UserList.all).to.include user
-          client.disconnect()
-          done()
-
-    # it "adds the user to the users", (done) ->
-    #   client = io.connect(socketURL, options)
-    #   client.on 'connect', (data) ->
-    #     client.on 'user created', (user_details) ->
-    #       console.log user_details
-    #       user  = user_details.user
-    #       users = user_details.users
-    #       expect(users).to.eql {user}
-    #       client.disconnect()
-    #       done()
+    # it "adds the user to the user list", (done) ->
+    #   expectation = (user) ->
+    #     expect(UserList.users).to.include(user)
+    #   testClientConnection(expectation, done)

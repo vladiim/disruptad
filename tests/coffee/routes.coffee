@@ -1,5 +1,5 @@
-expect = require('chai').expect
-routes = require('../routes')
+{ expect } = require('chai')
+routes     = require('../../routes')
 
 describe 'Routes', ->
   it 'defines the index route', ->

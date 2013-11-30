@@ -1,6 +1,8 @@
 class UserList
 	instance = null
+
   @users ?= []
+
   @add: (user) ->
   	@users.push(user)
 

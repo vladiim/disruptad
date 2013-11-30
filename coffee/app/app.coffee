@@ -6,9 +6,11 @@ routes  = require("./routes")
 http    = require("http")
 path    = require("path")
 socket  = require("socket.io")
-User    = require('./routes/user').User
 root    = exports ? window
 app     = express()
+
+{ User }     = require('./routes/user')
+{ UserList } = require('./routes/user_list')
 
 COOKIE_SECRET = "CXtgEF1E0kIAt9CXtgEF1E0kIAt9CXtgEF1E0kIAt9CXtgEF1E0kIAt9"
 
@@ -53,10 +55,9 @@ app.get "/", routes.index
 ### ********************************************************************
 EVENT HANDLERS
 ###
-# @users ?= {}
-
 io.sockets.on "connection", (socket) ->
   user = new User
+  UserList.add(user)
   io.sockets.emit 'user created', user
 
 ### ********************************************************************

@@ -1,5 +1,3 @@
-# {staff} = require "./staff"
-
 #
 # GET home page.
 # 

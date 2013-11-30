@@ -1,7 +1,19 @@
 extends app
 
 block content
-  h1= title
-  p Welcome to #{title}
+  section
+    div#key-stream
+      - var type      = "application/x-shockwave-flash"
+      - var data      = "http://static-cdn1.ustream.tv/swf/live/viewer:230.swf?vrsl=c:566&ulbr=100"
+      - var stream    = "utv16093748"
+      - var flashvars = "autoplay=true&locale=en_SG&referrer=unknown&autoResize=false&enablejsapi=true&ts=1384150323509&cid=16093748"
 
-  p #{user.uid}
+      object(type=type, data=data, width="100%", height="100%", id=stream, name=stream)
+        param(name="flashvars", value=flashvars)
+        param(name="allowfullscreen", value="true")
+        param(name="allowscriptaccess", value="always")
+        param(name="bgcolor", value="000000")
+        param(name="wmode", value="opaque")
+
+    a(id="disrupt-button", href="/")
+      DISRUPT

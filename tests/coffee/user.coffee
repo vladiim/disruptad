@@ -1,5 +1,5 @@
 { expect } = require('chai')
-{ User }   = require('../routes/user')
+{ User }   = require('../../routes/user')
 
 describe 'User', ->
 
