@@ -6,8 +6,10 @@
   routes = require('../../routes');
 
   describe('Routes', function() {
-    return it('defines the index route', function() {
-      return expect(routes.index).to.exist;
+    return describe('index', function() {
+      return it('defines the index route', function() {
+        return expect(routes.index).to.exist;
+      });
     });
   });
 

@@ -1,6 +1,5 @@
 expect     = require('chai').expect
 io         = require('socket.io-client')
-{UserList} = require('../../routes/user_list')
 socketURL  = 'http://localhost:3000'
 
 options =

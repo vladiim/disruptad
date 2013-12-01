@@ -84,6 +84,8 @@ MODULE DEPENDENCIES
 
   app.get("/", routes.index);
 
+  app.get("users", UserList.users);
+
   /* ********************************************************************
   EVENT HANDLERS
   */

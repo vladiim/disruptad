@@ -1,11 +1,9 @@
 (function() {
-  var UserList, expect, io, options, socketURL;
+  var expect, io, options, socketURL;
 
   expect = require('chai').expect;
 
   io = require('socket.io-client');
-
-  UserList = require('../../routes/user_list').UserList;
 
   socketURL = 'http://localhost:3000';
 

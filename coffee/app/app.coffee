@@ -50,7 +50,8 @@ io = socket.listen(server)
 ### ********************************************************************
 Routes
 ###
-app.get "/", routes.index
+app.get "/",     routes.index
+app.get "users", UserList.users
 
 ### ********************************************************************
 EVENT HANDLERS
@@ -58,6 +59,7 @@ EVENT HANDLERS
 io.sockets.on "connection", (socket) ->
   user = new User
   UserList.add(user)
+
   io.sockets.emit 'user created', user
 
 ### ********************************************************************

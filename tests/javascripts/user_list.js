@@ -7,10 +7,16 @@
 
   describe("UserList", function() {
     return describe("#add", function() {
-      return it("stores the user to all users", function() {
+      var addUser;
+      addUser = function() {
         var user;
         user = new Object;
         UserList.add(user);
+        return user;
+      };
+      return it("stores the user in users", function() {
+        var user;
+        user = addUser();
         return expect(UserList.users).to.include(user);
       });
     });
