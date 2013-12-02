@@ -16,6 +16,14 @@ app     = express()
 COOKIE_SECRET = "CXtgEF1E0kIAt9CXtgEF1E0kIAt9CXtgEF1E0kIAt9CXtgEF1E0kIAt9"
 
 ### ********************************************************************
+HELPER CLASS
+###
+
+class App
+
+  @createUser: ->
+
+### ********************************************************************
 MIDDLEWARE
 ###
 app.set "port", process.env.PORT or 3000
@@ -31,9 +39,11 @@ app.use (req, res, next) ->
   cookies = new Cookies(req, res)
   cookie  = cookies.get('disruptad-holler')
   if !cookie
-    id = Math.floor(Math.random() * (1000000000 - 100000000 + 1) + 100000000)
-    cookies.set('disruptad-holler', id)
-  app.set('userId', cookie)
+    id = Math.floor(Math.random() * (1000000000 - 1000000 + 1) + 1000000)
+    cookies.set('disruptad-holler-userId', id)
+    app.set('userId', id)
+  else
+    app.set('userId', cookie)
   next()
 
 app.use express.cookieParser(COOKIE_SECRET)
@@ -68,16 +78,17 @@ EVENT HANDLERS
 ###
 io.sockets.on "connection", (socket) ->
   queuePosition = UserList.users.length + 1
-  id = app.get('userId')
-  console.log("USER----ID---- #{id}")
-  user = new User(id, queuePosition)
+  myId          = app.get('userId')
+  user          = new User(myId, queuePosition)
   UserList.add(user)
 
   io.sockets.emit 'user created',
-    user: JSON.stringify(user)
+    user:  JSON.stringify(user)
     users: JSON.stringify(UserList.users)
+    myId:  myId
 
 ### ********************************************************************
 EXPORTS
 ###
-root.server   = server
+root.server = server
+root.App    = App

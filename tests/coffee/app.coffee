@@ -1,14 +1,16 @@
 expect     = require('chai').expect
+sinon      = require('sinon')
 io         = require('socket.io-client')
 socketURL  = 'http://localhost:3000'
+{ App }    = require('./app')
 
 options =
   transports: ['websocket']
   'force new connection': true
 
 describe "App", ->
-  describe "on client connection", ->
 
+  describe "on client connection", ->
     describe 'user created', ->
       testClientConnection = (expectation, done) ->
         client = io.connect(socketURL, options)
