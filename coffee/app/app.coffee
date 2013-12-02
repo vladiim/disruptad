@@ -65,4 +65,4 @@ io.sockets.on "connection", (socket) ->
 ### ********************************************************************
 EXPORTS
 ###
-root.server = server
+root.server   = server

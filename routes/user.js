@@ -4,6 +4,7 @@
   User = (function() {
     function User() {
       this.uid = this.createUid();
+      this.queuePosition = 1;
     }
 
     User.prototype.createUid = function() {

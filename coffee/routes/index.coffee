@@ -1,5 +1,7 @@
+{ UserList } = require('./user_list')
+
 index = (req, res) ->
-  res.render "index",
+  res.render   "index",
     title:     "DisruptAd"
     stream:    "utv16093748"
     type:      "application/x-shockwave-flash"

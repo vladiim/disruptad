@@ -1,6 +1,8 @@
 class UserList
 	instance = null
 
+  @test = 223
+
   @users ?= []
 
   @add: (user) ->

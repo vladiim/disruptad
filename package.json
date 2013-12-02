@@ -10,6 +10,7 @@
     "mocha": "*",
     "chai": "*",
     "sinon": "*",
+    "sinon-chai": "*",
     "socket.io-client": "*",
     "coffee-script": "*",
     "supervisor": "*",
