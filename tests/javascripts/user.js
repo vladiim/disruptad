@@ -7,20 +7,13 @@
 
   describe('User', function() {
     beforeEach(function() {
-      return this.user = new User;
-    });
-    it('creates a uid for the user', function() {
-      return expect(this.user.uid).to.exist;
+      return this.user = new User(123, 321);
     });
     it('sets the users socketId', function() {
-      var user;
-      user = new User(123, 321);
-      return expect(user.socketId).to.eql(123);
+      return expect(this.user.socketId).to.eql(123);
     });
     return it('sets the users queuePosition', function() {
-      var user;
-      user = new User(123, 321);
-      return expect(user.queuePosition).to.eql(321);
+      return expect(this.user.queuePosition).to.eql(321);
     });
   });
 

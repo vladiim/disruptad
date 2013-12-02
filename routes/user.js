@@ -3,16 +3,9 @@
 
   User = (function() {
     function User(socketId, queuePosition) {
-      this.uid = this.createUid();
-      this.queuePosition = queuePosition;
       this.socketId = socketId;
+      this.queuePosition = queuePosition;
     }
-
-    User.prototype.createUid = function() {
-      var randomNumber;
-      randomNumber = Math.random().toString();
-      return randomNumber = randomNumber.substring(2, randomNumber.length);
-    };
 
     return User;
 
