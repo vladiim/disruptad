@@ -1,7 +1,8 @@
 class User
-  constructor: ->
-    @uid = @createUid()
-    @queuePosition = 1
+  constructor: (socketId, queuePosition) ->
+    @uid           = @createUid()
+    @queuePosition = queuePosition
+    @socketId      = socketId
 
   createUid: ->
     randomNumber = Math.random().toString()

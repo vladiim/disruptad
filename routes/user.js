@@ -2,9 +2,10 @@
   var User, root;
 
   User = (function() {
-    function User() {
+    function User(socketId, queuePosition) {
       this.uid = this.createUid();
-      this.queuePosition = 1;
+      this.queuePosition = queuePosition;
+      this.socketId = socketId;
     }
 
     User.prototype.createUid = function() {

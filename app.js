@@ -93,9 +93,12 @@ MODULE DEPENDENCIES
 
   io.sockets.on("connection", function(socket) {
     var user;
-    user = new User;
+    user = new User(socket.id, UserList.users.length);
     UserList.add(user);
-    return io.sockets.emit('user created', user);
+    return io.sockets.emit('user created', {
+      user: JSON.stringify(user),
+      users: JSON.stringify(UserList.users)
+    });
   });
 
   /* ********************************************************************

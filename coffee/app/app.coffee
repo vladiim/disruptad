@@ -57,10 +57,12 @@ app.get "users", UserList.users
 EVENT HANDLERS
 ###
 io.sockets.on "connection", (socket) ->
-  user = new User
+  user = new User(socket.id, UserList.users.length)
   UserList.add(user)
 
-  io.sockets.emit 'user created', user
+  io.sockets.emit 'user created',
+    user: JSON.stringify(user)
+    users: JSON.stringify(UserList.users)
 
 ### ********************************************************************
 EXPORTS
