@@ -4,13 +4,15 @@ MODULE DEPENDENCIES
 
 
 (function() {
-  var COOKIE_SECRET, User, UserList, app, environment, express, http, io, path, root, routes, server, socket;
+  var COOKIE_SECRET, Cookies, User, UserList, app, environment, express, http, io, path, root, routes, server, socket;
 
   express = require("express");
 
   routes = require("./routes");
 
   http = require("http");
+
+  Cookies = require("cookies");
 
   path = require("path");
 
@@ -46,6 +48,18 @@ MODULE DEPENDENCIES
   app.use(express.urlencoded());
 
   app.use(express.methodOverride());
+
+  app.use(function(req, res, next) {
+    var cookie, cookies, id;
+    cookies = new Cookies(req, res);
+    cookie = cookies.get('disruptad-holler');
+    if (!cookie) {
+      id = Math.floor(Math.random() * (1000000000 - 100000000 + 1) + 100000000);
+      cookies.set('disruptad-holler', id);
+    }
+    app.set('userId', cookie);
+    return next();
+  });
 
   app.use(express.cookieParser(COOKIE_SECRET));
 
@@ -92,8 +106,11 @@ MODULE DEPENDENCIES
 
 
   io.sockets.on("connection", function(socket) {
-    var user;
-    user = new User(socket.id, UserList.users.length);
+    var id, queuePosition, user;
+    queuePosition = UserList.users.length + 1;
+    id = app.get('userId');
+    console.log("USER----ID---- " + id);
+    user = new User(id, queuePosition);
     UserList.add(user);
     return io.sockets.emit('user created', {
       user: JSON.stringify(user),

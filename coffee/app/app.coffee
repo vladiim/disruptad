@@ -4,6 +4,7 @@ MODULE DEPENDENCIES
 express = require("express")
 routes  = require("./routes")
 http    = require("http")
+Cookies = require("cookies")
 path    = require("path")
 socket  = require("socket.io")
 root    = exports ? window
@@ -25,6 +26,15 @@ app.use express.logger("dev")
 app.use express.json()
 app.use express.urlencoded()
 app.use express.methodOverride()
+
+app.use (req, res, next) ->
+  cookies = new Cookies(req, res)
+  cookie  = cookies.get('disruptad-holler')
+  if !cookie
+    id = Math.floor(Math.random() * (1000000000 - 100000000 + 1) + 100000000)
+    cookies.set('disruptad-holler', id)
+  app.set('userId', cookie)
+  next()
 
 app.use express.cookieParser(COOKIE_SECRET)
 app.use express.session()
@@ -57,7 +67,10 @@ app.get "users", UserList.users
 EVENT HANDLERS
 ###
 io.sockets.on "connection", (socket) ->
-  user = new User(socket.id, UserList.users.length)
+  queuePosition = UserList.users.length + 1
+  id = app.get('userId')
+  console.log("USER----ID---- #{id}")
+  user = new User(id, queuePosition)
   UserList.add(user)
 
   io.sockets.emit 'user created',

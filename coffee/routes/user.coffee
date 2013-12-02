@@ -1,5 +1,5 @@
 class User
-  constructor: (@socketId, @queuePosition) ->
+  constructor: (@id, @queuePosition) ->
 
 root = exports ? window  
 root.User = User

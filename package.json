@@ -12,6 +12,7 @@
     "sinon": "*",
     "sinon-chai": "*",
     "socket.io-client": "*",
+    "cookies": "*",
     "coffee-script": "*",
     "supervisor": "*",
     "express": "3.4.4",

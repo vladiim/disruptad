@@ -2,8 +2,8 @@
   var User, root;
 
   User = (function() {
-    function User(socketId, queuePosition) {
-      this.socketId = socketId;
+    function User(id, queuePosition) {
+      this.id = id;
       this.queuePosition = queuePosition;
     }
 
