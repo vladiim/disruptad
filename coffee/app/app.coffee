@@ -19,9 +19,14 @@ COOKIE_SECRET = "CXtgEF1E0kIAt9CXtgEF1E0kIAt9CXtgEF1E0kIAt9CXtgEF1E0kIAt9"
 HELPER CLASS
 ###
 
-class App
+class DisruptAd
+  constructor: (@UserList, @app) ->
 
-  @createUser: ->
+  createUser: ->
+    @queuePosition = @UserList.users.length + 1
+    @myId          = @app.get('userId')
+    @user          = new User(@myId, @queuePosition)
+    @UserList.add(@user)
 
 ### ********************************************************************
 MIDDLEWARE
@@ -77,18 +82,16 @@ app.get "users", UserList.users
 EVENT HANDLERS
 ###
 io.sockets.on "connection", (socket) ->
-  queuePosition = UserList.users.length + 1
-  myId          = app.get('userId')
-  user          = new User(myId, queuePosition)
-  UserList.add(user)
+  disruptad = new DisruptAd(UserList, app)
+  disruptad.createUser()
 
   io.sockets.emit 'user created',
-    user:  JSON.stringify(user)
+    user:  JSON.stringify(disruptad.user)
     users: JSON.stringify(UserList.users)
-    myId:  myId
+    myId:  disruptad.myId
 
 ### ********************************************************************
 EXPORTS
 ###
-root.server = server
-root.App    = App
+root.server    = server
+root.DisruptAd = DisruptAd

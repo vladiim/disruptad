@@ -4,7 +4,7 @@ MODULE DEPENDENCIES
 
 
 (function() {
-  var App, COOKIE_SECRET, Cookies, User, UserList, app, environment, express, http, io, path, root, routes, server, socket;
+  var COOKIE_SECRET, Cookies, DisruptAd, User, UserList, app, environment, express, http, io, path, root, routes, server, socket;
 
   express = require("express");
 
@@ -33,12 +33,20 @@ MODULE DEPENDENCIES
   */
 
 
-  App = (function() {
-    function App() {}
+  DisruptAd = (function() {
+    function DisruptAd(UserList, app) {
+      this.UserList = UserList;
+      this.app = app;
+    }
 
-    App.createUser = function() {};
+    DisruptAd.prototype.createUser = function() {
+      this.queuePosition = this.UserList.users.length + 1;
+      this.myId = this.app.get('userId');
+      this.user = new User(this.myId, this.queuePosition);
+      return this.UserList.add(this.user);
+    };
 
-    return App;
+    return DisruptAd;
 
   })();
 
@@ -122,15 +130,13 @@ MODULE DEPENDENCIES
 
 
   io.sockets.on("connection", function(socket) {
-    var myId, queuePosition, user;
-    queuePosition = UserList.users.length + 1;
-    myId = app.get('userId');
-    user = new User(myId, queuePosition);
-    UserList.add(user);
+    var disruptad;
+    disruptad = new DisruptAd(UserList, app);
+    disruptad.createUser();
     return io.sockets.emit('user created', {
-      user: JSON.stringify(user),
+      user: JSON.stringify(disruptad.user),
       users: JSON.stringify(UserList.users),
-      myId: myId
+      myId: disruptad.myId
     });
   });
 
@@ -141,6 +147,6 @@ MODULE DEPENDENCIES
 
   root.server = server;
 
-  root.App = App;
+  root.DisruptAd = DisruptAd;
 
 }).call(this);
