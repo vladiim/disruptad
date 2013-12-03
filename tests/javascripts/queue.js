@@ -1,15 +1,22 @@
 (function() {
-  var EMPTY_FOUR, EMPTY_ONE, EMPTY_THREE, EMPTY_TWO, FIRST_USER, Queue, USER_ID, expect, expectAllQueuesEmpty, expectOneUserInQueues;
+  var EMPTY_FOUR, EMPTY_ONE, EMPTY_THREE, EMPTY_TWO, FIRST_USER, Queue, SECOND_USER, UID, UID2, expect, expectAllQueuesEmpty, expectOneUserInQueues, expectTwoUsersInQueues;
 
   expect = require('chai').expect;
 
   Queue = require('../../routes/queue').Queue;
 
-  USER_ID = 123;
+  UID = 123;
+
+  UID2 = 321;
 
   FIRST_USER = {
     position: 1,
-    user_id: USER_ID
+    user_id: UID
+  };
+
+  SECOND_USER = {
+    position: 2,
+    user_id: UID2
   };
 
   EMPTY_ONE = {
@@ -58,6 +65,25 @@
     });
   };
 
+  expectTwoUsersInQueues = function() {
+    expect(Queue.one).to.eql({
+      name: 'one',
+      "members": [FIRST_USER, SECOND_USER]
+    });
+    expect(Queue.two).to.eql({
+      name: 'two',
+      "members": [FIRST_USER, SECOND_USER]
+    });
+    expect(Queue.three).to.eql({
+      name: 'three',
+      "members": [FIRST_USER, SECOND_USER]
+    });
+    return expect(Queue.four).to.eql({
+      name: 'four',
+      "members": [FIRST_USER, SECOND_USER]
+    });
+  };
+
   describe('Queue', function() {
     describe('no queues', function() {
       return it('sets up four empty queues', function() {
@@ -70,20 +96,25 @@
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         queue = _ref[_i];
-        _results.push(queue = []);
+        _results.push(queue['members'] = []);
       }
       return _results;
     });
     return describe('add(user)', function() {
       beforeEach(function() {
-        this.user = {
-          id: USER_ID
-        };
-        return Queue.add(this.user);
+        return Queue.add(UID);
       });
       describe('no one on any queue', function() {
         return it('adds the user as the first person on each queue', function() {
           return expectOneUserInQueues();
+        });
+      });
+      describe('add second user', function() {
+        return describe('first user in each queue', function() {
+          return it('adds the second user', function() {
+            Queue.add(UID2);
+            return expectTwoUsersInQueues();
+          });
         });
       });
       return describe('remove(user)', function() {

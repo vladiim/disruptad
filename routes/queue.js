@@ -30,30 +30,34 @@
 
     Queue.queues = [Queue.one, Queue.two, Queue.three, Queue.four];
 
-    Queue.add = function(user) {
-      var id, member, queue, _i, _len, _ref, _results;
-      id = user.id;
-      member = {
-        position: 1,
-        user_id: id
-      };
+    Queue.add = function(user_id) {
+      var queue, _i, _len, _ref, _results;
       _ref = this.queues;
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         queue = _ref[_i];
-        _results.push(queue['members'].push(member));
+        _results.push(this.addToQueue(queue, user_id));
       }
       return _results;
     };
 
-    Queue.remove = function(user) {
-      var id, queue, _i, _len, _ref, _results;
-      id = user.id;
+    Queue.addToQueue = function(queue, user_id) {
+      var member, position;
+      position = queue['members'].length + 1;
+      member = {
+        position: position,
+        user_id: user_id
+      };
+      return queue['members'].push(member);
+    };
+
+    Queue.remove = function(user_id) {
+      var queue, _i, _len, _ref, _results;
       _ref = this.queues;
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         queue = _ref[_i];
-        _results.push(this.removeFromQueue(queue, id));
+        _results.push(this.removeFromQueue(queue, user_id));
       }
       return _results;
     };

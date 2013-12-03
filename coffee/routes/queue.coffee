@@ -8,14 +8,16 @@ class Queue
 
   @queues: [@one, @two, @three, @four]
 
-  @add: (user) ->
-    id     = user.id
-    member = { position: 1, user_id: id }
-    queue['members'].push(member) for queue in @queues
+  @add: (user_id) ->
+    @addToQueue(queue, user_id) for queue in @queues
 
-  @remove: (user) ->
-    id = user.id
-    @removeFromQueue(queue, id) for queue in @queues
+  @addToQueue: (queue, user_id) ->
+    position = queue['members'].length + 1
+    member   = { position: position, user_id: user_id }
+    queue['members'].push(member)
+
+  @remove: (user_id) ->
+    @removeFromQueue(queue, user_id) for queue in @queues
 
   @removeFromQueue: (queue, user_id) ->
     switch queue['name']
