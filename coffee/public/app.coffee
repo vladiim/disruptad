@@ -1,5 +1,5 @@
-# for testing purposes
-# if !window then window = {}
+# for testing purposes only
+window = {}
 
 HOLLER_COOKIE = 'disruptad-holler-userId'
 
@@ -15,12 +15,6 @@ findMe = (users) ->
   myId = myId()
   for user in users
     return user if user.id is myId
-
-class ClientDocument
-  @introMessage:   $('#intro-message')
-  @keyStream:      $('#key-stream')
-  @disruptMessage: $('#disrupt-message')
-  @disruptButton: "<a id='disrupt-button' href='/'>DISRUPT</a>"
 
 class Ustream
   @streams:   ['utv16093748']
@@ -39,15 +33,28 @@ class Ustream
     "#{@object}#{@param1}#{@param2}#{@param3}#{@param4}#{@param5}</object>"
 
 window.onload = ->
+  Client =
+    introMessage:   $('#intro-message')
+    introOne:       '<p>For years advertising has taken pride in its ability to disrupt the general public.<p>'
+    introTwo:       "<p>For christmas we've turned the table on its head for a good cause; <i>giving you the power to disrupt advertising</i>. Literally."
+    keyStream:      $('#key-stream')
+    disruptMessage: $('#disrupt-message')
+    disruptButton:  "<a id='disrupt-button' href='/'>DISRUPT</a>"
+    showIntroMessage: -> Client.introMessage.html(Client.introOne)
+    hideIntroMessage: -> @introMessage.remove()
+
   socket  = io.connect('http://localhost:3000')
 
-  socket.on 'user created', (data) ->
-    console.log("myid: #{myId()}")
-    user  = JSON.parse(data.user)
-    users = JSON.parse(data.users)
-    one   = JSON.parse(data.one)
-    me    = findMe(users)
-    ClientDocument.keyStream.html(Ustream.html())
+  Client.showIntroMessage()
+  window.setInterval(Client.hideIntroMessage(), 3000)
+
+  socket.on 'connect', (data) ->
+    @myId = myId()
+
+    socket.on 'user created', (data) ->
+      user  = JSON.parse(data.user)
+      users = JSON.parse(data.users)
+      one   = JSON.parse(data.one)
+      Client.keyStream.html(Ustream.html())
 
 root = exports ? window
-root.myId = myId

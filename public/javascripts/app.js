@@ -1,5 +1,7 @@
 (function() {
-  var ClientDocument, HOLLER_COOKIE, Ustream, findMe, myId, root;
+  var HOLLER_COOKIE, Ustream, findMe, myId, root, window;
+
+  window = {};
 
   HOLLER_COOKIE = 'disruptad-holler-userId';
 
@@ -27,21 +29,6 @@
       }
     }
   };
-
-  ClientDocument = (function() {
-    function ClientDocument() {}
-
-    ClientDocument.introMessage = $('#intro-message');
-
-    ClientDocument.keyStream = $('#key-stream');
-
-    ClientDocument.disruptMessage = $('#disrupt-message');
-
-    ClientDocument.disruptButton = "<a id='disrupt-button' href='/'>DISRUPT</a>";
-
-    return ClientDocument;
-
-  })();
 
   Ustream = (function() {
     function Ustream() {}
@@ -77,21 +64,36 @@
   })();
 
   window.onload = function() {
-    var socket;
+    var Client, socket;
+    Client = {
+      introMessage: $('#intro-message'),
+      introOne: '<p>For years advertising has taken pride in its ability to disrupt the general public.<p>',
+      introTwo: "<p>For christmas we've turned the table on its head for a good cause; <i>giving you the power to disrupt advertising</i>. Literally.",
+      keyStream: $('#key-stream'),
+      disruptMessage: $('#disrupt-message'),
+      disruptButton: "<a id='disrupt-button' href='/'>DISRUPT</a>",
+      showIntroMessage: function() {
+        return Client.introMessage.html(Client.introOne);
+      },
+      hideIntroMessage: function() {
+        return this.introMessage.remove();
+      }
+    };
     socket = io.connect('http://localhost:3000');
-    return socket.on('user created', function(data) {
-      var me, one, user, users;
-      console.log("myid: " + (myId()));
-      user = JSON.parse(data.user);
-      users = JSON.parse(data.users);
-      one = JSON.parse(data.one);
-      me = findMe(users);
-      return ClientDocument.keyStream.html(Ustream.html());
+    Client.showIntroMessage();
+    window.setInterval(Client.hideIntroMessage(), 3000);
+    return socket.on('connect', function(data) {
+      this.myId = myId();
+      return socket.on('user created', function(data) {
+        var one, user, users;
+        user = JSON.parse(data.user);
+        users = JSON.parse(data.users);
+        one = JSON.parse(data.one);
+        return Client.keyStream.html(Ustream.html());
+      });
     });
   };
 
   root = typeof exports !== "undefined" && exports !== null ? exports : window;
-
-  root.myId = myId;
 
 }).call(this);
