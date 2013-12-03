@@ -27,7 +27,8 @@ footer {
   padding: 20px 0 100px 0;
 }
 
-#disrupt-button {
+#disrupt-button,
+#disrupt-message {
   text-align: center;
   margin: -30% 0 0 40%;
   position: absolute;

@@ -19,9 +19,10 @@
 
   findMe = function(users) {
     var user, _i, _len;
+    myId = myId();
     for (_i = 0, _len = users.length; _i < _len; _i++) {
       user = users[_i];
-      if (user.id === myId()) {
+      if (user.id === myId) {
         return user;
       }
     }

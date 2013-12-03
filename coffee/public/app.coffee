@@ -7,13 +7,14 @@ myId = ->
   cookies = document.cookie.split('; ')
   for cookie in cookies
     split_cookie = cookie.split('=')
-    key = split_cookie[0]
-    value = split_cookie[1]
+    key          = split_cookie[0]
+    value        = split_cookie[1]
     return parseInt(value) if key is HOLLER_COOKIE
 
 findMe = (users) ->
+  myId = myId()
   for user in users
-    return user if user.id is myId()
+    return user if user.id is myId
 
 window.onload = ->
   socket  = io.connect('http://localhost:3000')
