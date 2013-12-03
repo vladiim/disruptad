@@ -135,7 +135,7 @@
         });
       });
     });
-    return describe('removeMember()', function() {
+    return describe('removeFromMembers()', function() {
       return describe('two members', function() {
         beforeEach(function() {
           Queue.add(UID);
@@ -151,12 +151,12 @@
           }
           return _results;
         });
-        return describe('removeMember()', function() {
+        return describe('removeFromMembers()', function() {
           describe('with first user', function() {
             return it('leaves user two and updates the users position', function() {
               var result, tested_fn;
               tested_fn = function() {
-                return Queue.removeMember(Queue.one['members'], UID);
+                return Queue.removeFromMembers(Queue.one['members'], UID);
               };
               result = [
                 {
@@ -171,7 +171,7 @@
             return it('leaves user one and does not update the users position', function() {
               var result, tested_fn;
               tested_fn = function() {
-                return Queue.removeMember(Queue.one['members'], UID2);
+                return Queue.removeFromMembers(Queue.one['members'], UID2);
               };
               result = [
                 {

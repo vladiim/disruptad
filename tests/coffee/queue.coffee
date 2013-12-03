@@ -67,7 +67,7 @@ describe 'Queue', ->
             Queue.remove(UID2)
             expectOneUserInQueues()
 
-  describe 'removeMember()', ->
+  describe 'removeFromMembers()', ->
     describe 'two members', ->
       beforeEach ->
         Queue.add(UID)
@@ -75,15 +75,15 @@ describe 'Queue', ->
 
       afterEach -> queue['members'] = [] for queue in Queue.queues
 
-      describe 'removeMember()', ->
+      describe 'removeFromMembers()', ->
         describe 'with first user', ->
           it 'leaves user two and updates the users position', ->
-            tested_fn = -> Queue.removeMember(Queue.one['members'], UID)
+            tested_fn = -> Queue.removeFromMembers(Queue.one['members'], UID)
             result    = [{ position: 1, user_id: UID2 }]
             expect(tested_fn()).to.eql(result)
 
         describe 'with second user', ->
           it 'leaves user one and does not update the users position', ->
-            tested_fn = -> Queue.removeMember(Queue.one['members'], UID2)
+            tested_fn = -> Queue.removeFromMembers(Queue.one['members'], UID2)
             result    = [{ position: 1 , user_id: UID }]
             expect(tested_fn()).to.eql(result)

@@ -65,35 +65,53 @@
     Queue.removeFromQueue = function(queue, user_id) {
       switch (queue['name']) {
         case 'one':
-          return this.one['members'] = this.removeMember(this.one['members'], user_id);
+          return this.one['members'] = this.removeFromMembers(this.one['members'], user_id);
         case 'two':
-          return this.two['members'] = this.removeMember(this.two['members'], user_id);
+          return this.two['members'] = this.removeFromMembers(this.two['members'], user_id);
         case 'three':
-          return this.three['members'] = this.removeMember(this.three['members'], user_id);
+          return this.three['members'] = this.removeFromMembers(this.three['members'], user_id);
         case 'four':
-          return this.four['members'] = this.removeMember(this.four['members'], user_id);
+          return this.four['members'] = this.removeFromMembers(this.four['members'], user_id);
       }
     };
 
-    Queue.removeMember = function(members, user_id) {
-      var deleted_member, index, member, updated_index, updated_member, updated_position, _i, _j, _len, _len1;
+    Queue.removeFromMembers = function(members, user_id) {
+      var member, _i, _len;
       for (_i = 0, _len = members.length; _i < _len; _i++) {
         member = members[_i];
-        if (member['user_id'] === user_id) {
-          index = members.indexOf(member);
-          deleted_member = members[index];
-          members.splice(index, 1);
-          for (_j = 0, _len1 = members.length; _j < _len1; _j++) {
-            updated_member = members[_j];
-            updated_index = members.indexOf(updated_member);
-            updated_position = members[updated_index]['position'] - 1;
-            if (updated_position >= deleted_member['position']) {
-              members[updated_index]['position'] = updated_position;
-            }
-          }
-          return members;
+        if (this.memberIsUser(member, user_id)) {
+          return this.removeMember(members, member, user_id);
         }
       }
+    };
+
+    Queue.removeMember = function(members, member, user_id) {
+      var deleted_member, index;
+      index = members.indexOf(member);
+      deleted_member = members[index];
+      members.splice(index, 1);
+      this.updateMemberPositions(members, member, deleted_member);
+      return members;
+    };
+
+    Queue.updateMemberPositions = function(members, member, deleted_member) {
+      var updated_index, updated_member, updated_position, _i, _len, _results;
+      _results = [];
+      for (_i = 0, _len = members.length; _i < _len; _i++) {
+        updated_member = members[_i];
+        updated_index = members.indexOf(updated_member);
+        updated_position = members[updated_index]['position'] - 1;
+        if (updated_position >= deleted_member['position']) {
+          _results.push(members[updated_index]['position'] = updated_position);
+        } else {
+          _results.push(void 0);
+        }
+      }
+      return _results;
+    };
+
+    Queue.memberIsUser = function(member, user_id) {
+      return member['user_id'] === user_id;
     };
 
     return Queue;
