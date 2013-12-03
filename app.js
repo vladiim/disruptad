@@ -4,7 +4,7 @@ MODULE DEPENDENCIES
 
 
 (function() {
-  var COOKIE_SECRET, Cookies, DisruptAd, User, UserList, app, environment, express, http, io, path, root, routes, server, socket;
+  var COOKIE_SECRET, Cookies, DisruptAd, Queue, User, UserList, app, environment, express, http, io, path, root, routes, server, socket;
 
   express = require("express");
 
@@ -25,6 +25,8 @@ MODULE DEPENDENCIES
   User = require('./routes/user').User;
 
   UserList = require('./routes/user_list').UserList;
+
+  Queue = require('./routes/queue').Queue;
 
   COOKIE_SECRET = "CXtgEF1E0kIAt9CXtgEF1E0kIAt9CXtgEF1E0kIAt9CXtgEF1E0kIAt9";
 
@@ -148,5 +150,7 @@ MODULE DEPENDENCIES
   root.server = server;
 
   root.DisruptAd = DisruptAd;
+
+  root.Queue = Queue;
 
 }).call(this);

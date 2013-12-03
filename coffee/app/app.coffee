@@ -12,6 +12,7 @@ app     = express()
 
 { User }     = require('./routes/user')
 { UserList } = require('./routes/user_list')
+{ Queue }    = require('./routes/queue')
 
 COOKIE_SECRET = "CXtgEF1E0kIAt9CXtgEF1E0kIAt9CXtgEF1E0kIAt9CXtgEF1E0kIAt9"
 
@@ -95,3 +96,4 @@ EXPORTS
 ###
 root.server    = server
 root.DisruptAd = DisruptAd
+root.Queue     = Queue
