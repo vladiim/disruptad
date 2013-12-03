@@ -18,6 +18,12 @@ app     = express()
 COOKIE_SECRET = "CXtgEF1E0kIAt9CXtgEF1E0kIAt9CXtgEF1E0kIAt9CXtgEF1E0kIAt9"
 
 ### ********************************************************************
+HELPERS
+###
+
+randomId = -> Math.floor(Math.random() * (1000000000 - 1000000 + 1) + 1000000)
+
+### ********************************************************************
 MIDDLEWARE
 ###
 app.set "port", process.env.PORT or 3000
@@ -33,7 +39,7 @@ app.use (req, res, next) ->
   cookies = new Cookies(req, res)
   cookie  = cookies.get('disruptad-holler')
   if !cookie
-    id = Math.floor(Math.random() * (1000000000 - 1000000 + 1) + 1000000)
+    id = randomId()
     cookies.set('disruptad-holler-userId', id)
     app.set('userId', id)
   else
@@ -50,7 +56,10 @@ app.use express.static(path.join(__dirname, "public"))
 DEVELOPMENT ENVIRONMENT SETTINGS
 ###
 environment = app.get("env")
-app.use(express.errorHandler()) if environment is "development"
+
+if environment is "development"
+  app.use(express.errorHandler())
+  app.set('userId', randomId())
 
 ### ********************************************************************
 CREATE SERVER
@@ -83,7 +92,6 @@ io.sockets.on "connection", (socket) ->
     two:   JSON.stringify(Queue.two)
     three: JSON.stringify(Queue.three)
     four:  JSON.stringify(Queue.four)
-    myId:  myId
 
 ### ********************************************************************
 EXPORTS

@@ -35,6 +35,20 @@ describe "App", ->
   #       expectation = (disruptad) -> expect(disruptad.user.id).to.eql('myId')
   #       testDisruptAdCreateUser(expectation, done)
 
+  describe "on client connection", ->
+    describe 'user created', ->
+      it 'creates the user, adds ', (done) ->
+        client = io.connect(socketURL, options)
+        client.on 'connect', (data) ->
+          client.on 'user created', (data) ->
+            user  = JSON.parse(data.user)
+            users = JSON.parse(data.users)
+            one   = JSON.parse(data.one)
+            expect(users[0].id).to.eql(user.id)
+            expect(one['members'][0]['user_id']).to.eql(user.id)
+            client.disconnect()
+            done()
+
   # describe "on client connection", ->
   #   describe 'user created', ->
   #     testClientConnection = (expectation, done) ->

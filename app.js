@@ -4,7 +4,7 @@ MODULE DEPENDENCIES
 
 
 (function() {
-  var COOKIE_SECRET, Cookies, Queue, User, UserList, app, environment, express, http, io, path, root, routes, server, socket;
+  var COOKIE_SECRET, Cookies, Queue, User, UserList, app, environment, express, http, io, path, randomId, root, routes, server, socket;
 
   express = require("express");
 
@@ -33,6 +33,15 @@ MODULE DEPENDENCIES
   COOKIE_SECRET = "CXtgEF1E0kIAt9CXtgEF1E0kIAt9CXtgEF1E0kIAt9CXtgEF1E0kIAt9";
 
   /* ********************************************************************
+  HELPERS
+  */
+
+
+  randomId = function() {
+    return Math.floor(Math.random() * (1000000000 - 1000000 + 1) + 1000000);
+  };
+
+  /* ********************************************************************
   MIDDLEWARE
   */
 
@@ -58,7 +67,7 @@ MODULE DEPENDENCIES
     cookies = new Cookies(req, res);
     cookie = cookies.get('disruptad-holler');
     if (!cookie) {
-      id = Math.floor(Math.random() * (1000000000 - 1000000 + 1) + 1000000);
+      id = randomId();
       cookies.set('disruptad-holler-userId', id);
       app.set('userId', id);
     } else {
@@ -84,6 +93,7 @@ MODULE DEPENDENCIES
 
   if (environment === "development") {
     app.use(express.errorHandler());
+    app.set('userId', randomId());
   }
 
   /* ********************************************************************
@@ -121,8 +131,7 @@ MODULE DEPENDENCIES
       one: JSON.stringify(Queue.one),
       two: JSON.stringify(Queue.two),
       three: JSON.stringify(Queue.three),
-      four: JSON.stringify(Queue.four),
-      myId: myId
+      four: JSON.stringify(Queue.four)
     });
   });
 
