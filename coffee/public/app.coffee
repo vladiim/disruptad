@@ -8,7 +8,7 @@ window.onload = ->
 
   socket.on 'user created', (data) ->
     user  = JSON.parse(data.user)
-    users = JSON.parse(data.users, data.myId)
-    me    = findMe(users)
-    html  = "<p>Position: #{user.queuePosition} and my position: #{me.queuePosition}</p>"
+    one   = JSON.parse(data.one)
+    me    = findMe(data.users, data.myId)
+    html  = "<p>Position one: #{one.position}, me: #{me}</p>"
     disrupt.html(html)

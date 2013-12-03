@@ -1,3 +1,5 @@
+{ Queue } = require('./queue')
+
 class UserList
 	instance = null
 
