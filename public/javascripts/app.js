@@ -1,5 +1,5 @@
 (function() {
-  var HOLLER_COOKIE, Ustream, findMe, myId, root;
+  var ClientDocument, HOLLER_COOKIE, Ustream, findMe, myId, root;
 
   HOLLER_COOKIE = 'disruptad-holler-userId';
 
@@ -28,6 +28,21 @@
     }
   };
 
+  ClientDocument = (function() {
+    function ClientDocument() {}
+
+    ClientDocument.introMessage = $('#intro-message');
+
+    ClientDocument.keyStream = $('#key-stream');
+
+    ClientDocument.disruptMessage = $('#disrupt-message');
+
+    ClientDocument.disruptButton = "<a id='disrupt-button' href='/'>DISRUPT</a>";
+
+    return ClientDocument;
+
+  })();
+
   Ustream = (function() {
     function Ustream() {}
 
@@ -41,7 +56,7 @@
 
     Ustream.flashvars = "autoplay=true&locale=en_SG&referrer=unknown&autoResize=false&enablejsapi=true&ts=1384150323509&cid=16093748";
 
-    Ustream.object = "<object type='" + Ustream.type + "' width='100%' height='100%' id='" + Ustream.stream + "' name='" + Ustream.stream + "'>";
+    Ustream.object = "<object type='" + Ustream.type + "' data='" + Ustream.data + "' width='100%' height='100%' id='" + Ustream.stream + "' name='" + Ustream.stream + "'>";
 
     Ustream.param1 = "<param name='flashvars' value='" + Ustream.flashvars + "'>";
 
@@ -62,20 +77,16 @@
   })();
 
   window.onload = function() {
-    var button, keyStream, message, socket;
+    var socket;
     socket = io.connect('http://localhost:3000');
-    message = $('#disrupt-message');
-    keyStream = $('#key-stream');
-    button = "<a id='disrupt-button' href='/'>DISRUPT</a>";
-    return socket.on('connect', function(data) {
-      return socket.on('user created', function(data) {
-        var me, one, user, users;
-        user = JSON.parse(data.user);
-        users = JSON.parse(data.users);
-        one = JSON.parse(data.one);
-        me = findMe(users);
-        return keyStream.html(Ustream.html());
-      });
+    return socket.on('user created', function(data) {
+      var me, one, user, users;
+      console.log("myid: " + (myId()));
+      user = JSON.parse(data.user);
+      users = JSON.parse(data.users);
+      one = JSON.parse(data.one);
+      me = findMe(users);
+      return ClientDocument.keyStream.html(Ustream.html());
     });
   };
 
