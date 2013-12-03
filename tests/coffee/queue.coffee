@@ -31,6 +31,7 @@ expectTwoUsersInQueues = ->
     expect(Queue.four).to.eql({ name: 'four',"members": [FIRST_USER, SECOND_USER] })
 
 describe 'Queue', ->
+
   describe 'no queues', ->
     it 'sets up four empty queues', ->
       expectAllQueuesEmpty()
@@ -55,5 +56,34 @@ describe 'Queue', ->
     describe 'remove(user)', ->
       describe 'only one user', ->
         it 'empties the queues', ->
-          Queue.remove(@user)
+          Queue.remove(UID)
           expectAllQueuesEmpty()
+
+      describe 'more than one user,', ->
+
+        describe 'remove user 2;', ->
+          it 'leaves user one', ->
+            Queue.add(UID2)
+            Queue.remove(UID2)
+            expectOneUserInQueues()
+
+  describe 'removeMember()', ->
+    describe 'two members', ->
+      beforeEach ->
+        Queue.add(UID)
+        Queue.add(UID2)
+
+      afterEach -> queue['members'] = [] for queue in Queue.queues
+
+      describe 'removeMember()', ->
+        describe 'with first user', ->
+          it 'leaves user two and updates the users position', ->
+            tested_fn = -> Queue.removeMember(Queue.one['members'], UID)
+            result    = [{ position: 1, user_id: UID2 }]
+            expect(tested_fn()).to.eql(result)
+
+        describe 'with second user', ->
+          it 'leaves user one and does not update the users position', ->
+            tested_fn = -> Queue.removeMember(Queue.one['members'], UID2)
+            result    = [{ position: 1 , user_id: UID }]
+            expect(tested_fn()).to.eql(result)

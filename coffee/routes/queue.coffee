@@ -1,3 +1,10 @@
+# Queue is a singleton class that keeps track of the number of people in 
+# each of the four queues for Holler staff
+
+# Queue has two main funcions:
+#   @add(user_id) which adds a user to the four queues
+#   @remove(user_id) which removes a user to the four queues
+
 class Queue
   instance = null
 
@@ -21,10 +28,23 @@ class Queue
 
   @removeFromQueue: (queue, user_id) ->
     switch queue['name']
-      when 'one'   then @one['members'] = []
-      when 'two'   then @two['members'] = []
-      when 'three' then @three['members'] = []
-      when 'four'  then @four['members'] = []
+      when 'one'   then @one['members']   = @removeMember(@one['members'], user_id)
+      when 'two'   then @two['members']   = @removeMember(@two['members'], user_id)
+      when 'three' then @three['members'] = @removeMember(@three['members'], user_id)
+      when 'four'  then @four['members']  = @removeMember(@four['members'], user_id)
+
+  @removeMember: (members, user_id) ->
+    for member in members
+      if member['user_id'] is user_id
+        index = members.indexOf(member)
+        deleted_member = members[index]
+        members.splice(index, 1)
+        for updated_member in members
+          updated_index    = members.indexOf(updated_member)
+          updated_position = members[updated_index]['position'] - 1
+          if updated_position >= deleted_member['position']
+            members[updated_index]['position'] = updated_position
+        return members
 
 root = exports ? window  
 root.Queue = Queue

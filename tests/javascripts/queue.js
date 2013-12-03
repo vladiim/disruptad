@@ -100,7 +100,7 @@
       }
       return _results;
     });
-    return describe('add(user)', function() {
+    describe('add(user)', function() {
       beforeEach(function() {
         return Queue.add(UID);
       });
@@ -118,10 +118,69 @@
         });
       });
       return describe('remove(user)', function() {
-        return describe('only one user', function() {
+        describe('only one user', function() {
           return it('empties the queues', function() {
-            Queue.remove(this.user);
+            Queue.remove(UID);
             return expectAllQueuesEmpty();
+          });
+        });
+        return describe('more than one user,', function() {
+          return describe('remove user 2;', function() {
+            return it('leaves user one', function() {
+              Queue.add(UID2);
+              Queue.remove(UID2);
+              return expectOneUserInQueues();
+            });
+          });
+        });
+      });
+    });
+    return describe('removeMember()', function() {
+      return describe('two members', function() {
+        beforeEach(function() {
+          Queue.add(UID);
+          return Queue.add(UID2);
+        });
+        afterEach(function() {
+          var queue, _i, _len, _ref, _results;
+          _ref = Queue.queues;
+          _results = [];
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            queue = _ref[_i];
+            _results.push(queue['members'] = []);
+          }
+          return _results;
+        });
+        return describe('removeMember()', function() {
+          describe('with first user', function() {
+            return it('leaves user two and updates the users position', function() {
+              var result, tested_fn;
+              tested_fn = function() {
+                return Queue.removeMember(Queue.one['members'], UID);
+              };
+              result = [
+                {
+                  position: 1,
+                  user_id: UID2
+                }
+              ];
+              return expect(tested_fn()).to.eql(result);
+            });
+          });
+          return describe('with second user', function() {
+            return it('leaves user one and does not update the users position', function() {
+              var result, tested_fn;
+              tested_fn = function() {
+                return Queue.removeMember(Queue.one['members'], UID2);
+              };
+              result = [
+                {
+                  position: 1,
+                  user_id: UID
+                }
+              ];
+              return expect(tested_fn()).to.eql(result);
+            });
           });
         });
       });
