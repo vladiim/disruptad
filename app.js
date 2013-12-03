@@ -65,14 +65,17 @@ MODULE DEPENDENCIES
   app.use(function(req, res, next) {
     var cookie, cookies, id;
     cookies = new Cookies(req, res);
-    cookie = cookies.get('disruptad-holler');
+    cookie = cookies.get('disruptad-holler-userId');
     if (!cookie) {
       id = randomId();
-      cookies.set('disruptad-holler-userId', id);
+      cookies.set('disruptad-holler-userId', id, {
+        httpOnly: false
+      });
       app.set('userId', id);
     } else {
       app.set('userId', cookie);
     }
+    console.log("----COOKIE:::: " + (cookies.get('disruptad-holler-userId')));
     return next();
   });
 

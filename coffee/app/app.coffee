@@ -37,13 +37,14 @@ app.use express.methodOverride()
 
 app.use (req, res, next) ->
   cookies = new Cookies(req, res)
-  cookie  = cookies.get('disruptad-holler')
+  cookie  = cookies.get('disruptad-holler-userId')
   if !cookie
     id = randomId()
-    cookies.set('disruptad-holler-userId', id)
+    cookies.set('disruptad-holler-userId', id, { httpOnly: false } )
     app.set('userId', id)
   else
     app.set('userId', cookie)
+  console.log("----COOKIE:::: #{cookies.get('disruptad-holler-userId')}")
   next()
 
 app.use express.cookieParser(COOKIE_SECRET)
