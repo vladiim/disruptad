@@ -44,7 +44,6 @@ app.use (req, res, next) ->
     app.set('userId', id)
   else
     app.set('userId', cookie)
-  console.log("----COOKIE:::: #{cookies.get('disruptad-holler-userId')}")
   next()
 
 app.use express.cookieParser(COOKIE_SECRET)

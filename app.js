@@ -75,7 +75,6 @@ MODULE DEPENDENCIES
     } else {
       app.set('userId', cookie);
     }
-    console.log("----COOKIE:::: " + (cookies.get('disruptad-holler-userId')));
     return next();
   });
 

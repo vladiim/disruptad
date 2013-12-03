@@ -27,15 +27,20 @@ footer {
   padding: 20px 0 100px 0;
 }
 
-#disrupt-button,
 #disrupt-message {
   text-align: center;
-  margin: -30% 0 0 40%;
+  margin: -35% 0 0 35%;
   position: absolute;
-  font-size: 50px;
   text-decoration: none;
   color: white;
   background: black;
   border: solid 5px white;
   padding: 0.2em;
+  display: block;
+  width: 300px;
+  height: 200px;
+}
+
+#disrupt-button {
+  font-size: 50px;
 }
