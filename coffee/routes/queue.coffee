@@ -18,13 +18,15 @@ class Queue
   @add: (user_id) ->
     @addToQueue(queue, user_id) for queue in @queues
 
+  @remove: (user_id) ->
+    @removeFromQueue(queue, user_id) for queue in @queues
+
+  # ---------- # PRIVATE METHODS # ---------- #
+
   @addToQueue: (queue, user_id) ->
     position = queue['members'].length + 1
     member   = { position: position, user_id: user_id }
     queue['members'].push(member)
-
-  @remove: (user_id) ->
-    @removeFromQueue(queue, user_id) for queue in @queues
 
   @removeFromQueue: (queue, user_id) ->
     switch queue['name']

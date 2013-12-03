@@ -11,7 +11,8 @@ root    = exports ? window
 app     = express()
 
 { User }     = require('./routes/user')
-{ UserList } = require('./routes/user_list')
+# { UserList } = require('./routes/user_list')
+{ Queue }    = require('./routes/queue')
 { Queue }    = require('./routes/queue')
 
 COOKIE_SECRET = "CXtgEF1E0kIAt9CXtgEF1E0kIAt9CXtgEF1E0kIAt9CXtgEF1E0kIAt9"
@@ -21,13 +22,12 @@ HELPER CLASS
 ###
 
 class DisruptAd
-  constructor: (@UserList, @app) ->
+  constructor: (@app) ->
 
   createUser: ->
-    @queuePosition = @UserList.users.length + 1
-    @myId          = @app.get('userId')
-    @user          = new User(@myId, @queuePosition)
-    @UserList.add(@user)
+    @myId = @app.get('userId')
+    @user = new User(@myId)
+    Queue.add(@user)
 
 ### ********************************************************************
 MIDDLEWARE
@@ -77,18 +77,21 @@ io = socket.listen(server)
 Routes
 ###
 app.get "/",     routes.index
-app.get "users", UserList.users
+# app.get "users", UserList.users
 
 ### ********************************************************************
 EVENT HANDLERS
 ###
 io.sockets.on "connection", (socket) ->
-  disruptad = new DisruptAd(UserList, app)
+  disruptad = new DisruptAd(app)
   disruptad.createUser()
 
   io.sockets.emit 'user created',
     user:  JSON.stringify(disruptad.user)
-    users: JSON.stringify(UserList.users)
+    one:   JSON.stringify(Queue.one)
+    two:   JSON.stringify(Queue.two)
+    three: JSON.stringify(Queue.three)
+    four:  JSON.stringify(Queue.four)
     myId:  disruptad.myId
 
 ### ********************************************************************

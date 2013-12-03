@@ -2,9 +2,8 @@
   var User, root;
 
   User = (function() {
-    function User(id, queuePosition) {
+    function User(id) {
       this.id = id;
-      this.queuePosition = queuePosition;
     }
 
     return User;

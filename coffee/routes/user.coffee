@@ -1,5 +1,5 @@
 class User
-  constructor: (@id, @queuePosition) ->
+  constructor: (@id) ->
 
 root = exports ? window  
 root.User = User

@@ -4,7 +4,7 @@ MODULE DEPENDENCIES
 
 
 (function() {
-  var COOKIE_SECRET, Cookies, DisruptAd, Queue, User, UserList, app, environment, express, http, io, path, root, routes, server, socket;
+  var COOKIE_SECRET, Cookies, DisruptAd, Queue, User, app, environment, express, http, io, path, root, routes, server, socket;
 
   express = require("express");
 
@@ -24,7 +24,7 @@ MODULE DEPENDENCIES
 
   User = require('./routes/user').User;
 
-  UserList = require('./routes/user_list').UserList;
+  Queue = require('./routes/queue').Queue;
 
   Queue = require('./routes/queue').Queue;
 
@@ -36,16 +36,14 @@ MODULE DEPENDENCIES
 
 
   DisruptAd = (function() {
-    function DisruptAd(UserList, app) {
-      this.UserList = UserList;
+    function DisruptAd(app) {
       this.app = app;
     }
 
     DisruptAd.prototype.createUser = function() {
-      this.queuePosition = this.UserList.users.length + 1;
       this.myId = this.app.get('userId');
-      this.user = new User(this.myId, this.queuePosition);
-      return this.UserList.add(this.user);
+      this.user = new User(this.myId);
+      return Queue.add(this.user);
     };
 
     return DisruptAd;
@@ -124,8 +122,6 @@ MODULE DEPENDENCIES
 
   app.get("/", routes.index);
 
-  app.get("users", UserList.users);
-
   /* ********************************************************************
   EVENT HANDLERS
   */
@@ -133,11 +129,14 @@ MODULE DEPENDENCIES
 
   io.sockets.on("connection", function(socket) {
     var disruptad;
-    disruptad = new DisruptAd(UserList, app);
+    disruptad = new DisruptAd(app);
     disruptad.createUser();
     return io.sockets.emit('user created', {
       user: JSON.stringify(disruptad.user),
-      users: JSON.stringify(UserList.users),
+      one: JSON.stringify(Queue.one),
+      two: JSON.stringify(Queue.two),
+      three: JSON.stringify(Queue.three),
+      four: JSON.stringify(Queue.four),
       myId: disruptad.myId
     });
   });
