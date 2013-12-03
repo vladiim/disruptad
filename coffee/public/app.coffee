@@ -1,10 +1,13 @@
+findUserIdCookie = (cookie, cookies) ->
+  split_cookie = cookie.split('=')
+  key = split_cookie[0]
+  value = split_cookie[1]
+  return parseInt(value) if key is 'disruptad-holler-userId'
+
 myId = (document) ->
   cookies = document.cookie.split('; ')
   for cookie in cookies
-    split_cookie = cookie.split('=')
-    key = split_cookie[0]
-    value = split_cookie[1]
-    return parseInt(value) if key is 'disruptad-holler-userId'
+    return findUserIdCookie(cookie, cookies)
 
 findMe = (users) ->
   for user in users

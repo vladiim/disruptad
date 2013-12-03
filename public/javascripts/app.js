@@ -1,17 +1,22 @@
 (function() {
-  var findMe, myId, root, window;
+  var findMe, findUserIdCookie, myId, root, window;
+
+  findUserIdCookie = function(cookie, cookies) {
+    var key, split_cookie, value;
+    split_cookie = cookie.split('=');
+    key = split_cookie[0];
+    value = split_cookie[1];
+    if (key === 'disruptad-holler-userId') {
+      return parseInt(value);
+    }
+  };
 
   myId = function(document) {
-    var cookie, cookies, key, split_cookie, value, _i, _len;
+    var cookie, cookies, _i, _len;
     cookies = document.cookie.split('; ');
     for (_i = 0, _len = cookies.length; _i < _len; _i++) {
       cookie = cookies[_i];
-      split_cookie = cookie.split('=');
-      key = split_cookie[0];
-      value = split_cookie[1];
-      if (key === 'disruptad-holler-userId') {
-        return parseInt(value);
-      }
+      return findUserIdCookie(cookie, cookies);
     }
   };
 
